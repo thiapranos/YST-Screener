@@ -387,6 +387,63 @@
       gap: 12px;
     }
 
+    .notes-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    .notes-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .notes-label {
+      margin-top: 4px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .notes-textarea {
+      width: 100%;
+      min-height: 150px;
+      resize: vertical;
+      padding: 13px 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: 14px;
+      background: var(--card-soft);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .notes-textarea::placeholder {
+      color: var(--muted-2);
+    }
+
+    .notes-textarea:focus {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+      border-color: transparent;
+      background: #fff;
+    }
+
+    .notes-print {
+      display: none;
+      white-space: pre-wrap;
+      min-height: 96px;
+      padding: 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.5;
+      background: #fff;
+    }
+
     .count-pill {
       display: inline-flex;
       align-items: center;
@@ -485,6 +542,8 @@
       .hero-head { padding: 0 0 12px; background: #fff; border-bottom: 1px solid #000; }
       .content { padding: 14px 0 0; }
       .badge, .notice, .btns { display: none !important; }
+      .notes-textarea, .notes-label { display: none !important; }
+      .notes-print { display: block !important; border-color: #000; min-height: 90px; }
       .card, .summary { box-shadow: none; break-inside: avoid; }
       .summary { background: #fff; border-color: #000; }
       .print-only { display: block !important; }
@@ -611,17 +670,25 @@
               </details>
             </section>
 
+            <section class="card notes-card" aria-labelledby="notesTitle">
+              <h2 id="notesTitle">Worker notes</h2>
+              <p>Optional notes for case context, safety planning, consultation, or follow-up. These notes stay in this browser session and will be included when you prepare the PDF.</p>
+              <label class="notes-label" for="workerNotes">Notes</label>
+              <textarea id="workerNotes" class="notes-textarea" placeholder="Add brief notes here..."></textarea>
+              <div id="workerNotesPrint" class="notes-print" aria-hidden="true"></div>
+            </section>
+
             <div class="btns">
               <button class="btn primary" id="printBtn" type="button">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8V4h10v4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2" stroke="currentColor" stroke-width="1.8"/><path d="M7 14h10v6H7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-                Print / Save PDF
+                Prepare PDF
               </button>
 
               <a href="https://redcap.apps01.yorku.ca/surveys/?s=LXRM78JDTM" target="_blank" rel="noopener" class="btn">
                 Complete REDCap Survey
               </a>
 
-              <span class="print-note">Tip: expand dropdowns before printing so all items appear on the PDF.</span>
+              <span class="print-note">Dropdowns will expand automatically before printing so confirmed and follow-up items appear on the PDF.</span>
             </div>
           </div>
         </div>
@@ -870,6 +937,39 @@
       });
     }
 
+    function syncWorkerNotesPrint() {
+      const notes = document.getElementById('workerNotes')?.value.trim() || '';
+      const printBox = document.getElementById('workerNotesPrint');
+      if (!printBox) return;
+      printBox.textContent = notes || 'No worker notes entered.';
+    }
+
+    function initWorkerNotes() {
+      const notes = document.getElementById('workerNotes');
+      if (!notes) return;
+      notes.value = localStorage.getItem('yst_worker_notes') || '';
+      syncWorkerNotesPrint();
+      notes.addEventListener('input', () => {
+        localStorage.setItem('yst_worker_notes', notes.value);
+        syncWorkerNotesPrint();
+      });
+    }
+
+    function expandAllDetails() {
+      document.querySelectorAll('details').forEach(detail => {
+        detail.open = true;
+      });
+    }
+
+    function prepareReportPrint() {
+      expandAllDetails();
+      syncWorkerNotesPrint();
+      const dt = new Date();
+      const stamp = dt.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+      document.getElementById('printMeta').textContent = `Screened on ${stamp} • This printout is generated from a device-only session.`;
+      window.print();
+    }
+
     function render() {
       const storedCount = countStoredItems();
       if (storedCount === 0) {
@@ -908,9 +1008,11 @@
       });
       localStorage.removeItem('factor1_score');
       localStorage.removeItem('factor2_score');
+      localStorage.removeItem('yst_worker_notes');
     }
 
-    document.getElementById('printBtn').addEventListener('click', () => window.print());
+    document.getElementById('printBtn').addEventListener('click', prepareReportPrint);
+    initWorkerNotes();
     render();
     window.addEventListener('pagehide', clearKeys);
     window.addEventListener('beforeunload', clearKeys);
