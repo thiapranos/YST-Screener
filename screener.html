@@ -826,7 +826,7 @@
 
     document.getElementById('submitBtn').addEventListener('click', () => {
       if (validateAndScore()) {
-        const resultsUrl = new URL('results.html', window.location.href);
+        const resultsUrl = new URL('final results.html', window.location.href);
         window.location.href = resultsUrl.href;
       }
     });
