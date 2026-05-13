@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screener Results — York-Simcoe Sex Trafficking Screener</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --york-red: #E31837;
+      --york-red-dark: #A70F1D;
+      --york-red-900: #7E0C17;
+      --york-red-soft: #FFF0F3;
+      --ink: #171717;
+      --ink-soft: #34302F;
+      --muted: #68605D;
+      --muted-2: #8E8581;
+      --bg: #F7F3EF;
+      --card: #FFFFFF;
+      --card-soft: #FCFAF8;
+      --border: #E5DED6;
+      --border-strong: #D3C8BE;
+      --focus: #118AB2;
+      --shadow: 0 22px 60px rgba(30, 24, 20, .09);
+      --shadow-soft: 0 8px 22px rgba(30, 24, 20, .06);
+
+      --risk-low: #10B981;
+      --risk-slight: #FACC15;
+      --risk-elev: #FB923C;
+      --risk-very: #E31837;
+      --risk-low-text: #065F46;
+      --risk-slight-text: #7A6000;
+      --risk-elev-text: #8A3A05;
+      --risk-very-text: #9F1239;
+
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 13px;
+      --max: 980px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(227, 24, 55, .12), transparent 34rem),
+        radial-gradient(circle at 92% 18%, rgba(227, 24, 55, .075), transparent 28rem),
+        linear-gradient(180deg, #FFFCFA 0%, var(--bg) 52%, #F1ECE6 100%);
+      padding: 32px 16px 42px;
+      display: grid;
+      place-items: start center;
+    }
+
+    button, a { font: inherit; -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 10px; }
+
+    .wrap { width: min(100%, var(--max)); }
+
+    .hero {
+      overflow: hidden;
+      background: rgba(255, 255, 255, .95);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-head {
+      position: relative;
+      padding: 30px 24px 22px;
+      border-bottom: 1px solid var(--border);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.98), rgba(255,240,243,.78)),
+        radial-gradient(circle at 94% 12%, rgba(227,24,55,.16), transparent 18rem);
+    }
+
+    @media (min-width: 720px) {
+      .hero-head { padding: 38px 40px 28px; }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 7px 12px;
+      border: 1px solid rgba(227, 24, 55, .20);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--york-red-dark);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .035em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5.2vw, 58px);
+      line-height: .98;
+      letter-spacing: -.052em;
+    }
+
+    .lede {
+      max-width: 700px;
+      margin: 14px 0 0;
+      color: var(--ink-soft);
+      font-size: clamp(15px, 2vw, 17px);
+      line-height: 1.55;
+    }
+
+    .content { padding: 18px; }
+    @media (min-width: 720px) { .content { padding: 24px 40px 38px; } }
+
+    .notice {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 15px;
+      border-radius: var(--radius-md);
+      border: 1px dashed rgba(227, 24, 55, .32);
+      background: var(--york-red-soft);
+      color: var(--york-red-900);
+      font-size: 13.5px;
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .notice svg { flex: 0 0 auto; margin-top: 1px; }
+    .notice strong { font-weight: 800; }
+
+    .missing-data {
+      display: none;
+      margin-bottom: 16px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--york-red);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .missing-data h2 { margin: 0 0 8px; font-size: 20px; letter-spacing: -.02em; }
+    .missing-data p { margin: 0; color: var(--muted); line-height: 1.5; }
+    body.no-data .missing-data { display: block; }
+    body.no-data #resultsContent { display: none; }
+
+    .summary {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--york-red);
+      background: linear-gradient(180deg, #fff, #FFF7F8);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .summary-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .summary h2,
+    .card h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: -.025em;
+    }
+
+    .summary-blurb {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.58;
+    }
+
+    .summary-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .print-only { display: none; }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .factor-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 860px) {
+      .factor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-head {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .scoreline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .score-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+      color: var(--muted);
+    }
+
+    .riskline {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 12px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(30, 24, 20, .08);
+    }
+
+    .pill.low { background: rgba(16,185,129,.12); color: var(--risk-low-text); border-color: rgba(16,185,129,.25); }
+    .pill.slight { background: rgba(250,204,21,.18); color: var(--risk-slight-text); border-color: rgba(250,204,21,.35); }
+    .pill.elev { background: rgba(251,146,60,.18); color: var(--risk-elev-text); border-color: rgba(251,146,60,.35); }
+    .pill.very { background: var(--risk-very); color: #fff; }
+
+    .pill .ico {
+      width: 17px;
+      height: 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pill svg { width: 17px; height: 17px; display: block; }
+
+    .factor-blurb {
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .chart-wrap { margin-top: 14px; }
+
+    .chart-box {
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+      overflow: visible;
+    }
+
+    .gauge {
+      position: relative;
+      width: 100%;
+      height: 30px;
+      border-radius: 999px;
+      overflow: visible;
+      border: 1px solid rgba(0,0,0,.08);
+      background:
+        linear-gradient(90deg,
+          var(--risk-low) 0 25%,
+          var(--risk-slight) 25% 50%,
+          var(--risk-elev) 50% 75%,
+          var(--risk-very) 75% 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.36);
+    }
+
+    .pointer {
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-top: 13px solid var(--york-red-900);
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,.16));
+    }
+
+    .band-labels {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .band-labels span { text-align: center; }
+    .band-labels .active.low { color: var(--risk-low-text); }
+    .band-labels .active.slight { color: var(--risk-slight-text); }
+    .band-labels .active.elev { color: var(--risk-elev-text); }
+    .band-labels .active.very { color: var(--risk-very-text); }
+
+    details {
+      margin-top: 14px;
+      border-top: 1px solid var(--border);
+      padding-top: 6px;
+    }
+
+    summary {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      list-style: none;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 9px;
+      height: 9px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(-45deg);
+      transition: transform .18s ease;
+      margin-left: 2px;
+    }
+    details[open] summary::before { transform: rotate(45deg); }
+
+    .list {
+      margin: 8px 0 0;
+      padding-left: 20px;
+      color: var(--ink-soft);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    .list li { margin: 7px 0; }
+
+    .investigate-card h2 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      min-height: 28px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--york-red-soft);
+      color: var(--york-red-dark);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .btns {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 2px;
+    }
+
+    .btn {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border-strong);
+      background: #fff;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease, filter .15s ease;
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--york-red), var(--york-red-dark));
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(227, 24, 55, .22);
+    }
+
+    .btn:hover { border-color: var(--york-red); box-shadow: var(--shadow-soft); }
+    .btn.primary:hover { filter: saturate(1.08); box-shadow: 0 16px 30px rgba(227, 24, 55, .28); }
+    .btn:active { transform: translateY(1px); }
+
+    .print-note {
+      flex: 1 1 240px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.35;
+    }
+
+    footer {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 560px) {
+      body { padding: 18px 12px 28px; }
+      .hero-head { padding: 26px 18px 20px; }
+      .content { padding: 14px; }
+      .card, .summary { padding: 15px; }
+      .riskline { gap: 8px; }
+      .pill { white-space: normal; }
+      .btn { width: 100%; }
+      .print-note { text-align: center; }
+    }
+
+    @media print {
+      @page { margin: 16mm; }
+      body { background: #fff; padding: 0; display: block; }
+      .wrap { width: 100%; max-width: none; }
+      .hero { box-shadow: none; border: 0; border-radius: 0; }
+      .hero-head { padding: 0 0 12px; background: #fff; border-bottom: 1px solid #000; }
+      .content { padding: 14px 0 0; }
+      .badge, .notice, .btns { display: none !important; }
+      .card, .summary { box-shadow: none; break-inside: avoid; }
+      .summary { background: #fff; border-color: #000; }
+      .print-only { display: block !important; }
+      .gauge { border: 1px solid #000; }
+      .band-labels span { color: #000 !important; }
+      details { break-inside: avoid; }
+      footer { color: #000; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap" role="main">
+    <section class="hero" aria-labelledby="pageTitle">
+      <div class="hero-head">
+        <div class="badge" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z" stroke="currentColor" stroke-width="1.5" fill="none"></path>
+            <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          York-Simcoe Sex Trafficking Screener
+        </div>
+        <h1 id="pageTitle">Screener results</h1>
+        <p class="lede">Review the summary, risk bands, confirmed risk items, and items that may need follow-up before saving or recording results according to agency procedure.</p>
+      </div>
+
+      <div class="content">
+        <div class="notice" role="note" aria-live="polite">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 9v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M12 17h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M10.3 4.4 2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+          <div><strong>Results are not saved.</strong> Print/save a PDF or record outcomes per agency procedure before leaving or refreshing this page.</div>
+        </div>
+
+        <section class="missing-data" id="missingData" aria-labelledby="missingDataTitle">
+          <h2 id="missingDataTitle">No completed screener data found</h2>
+          <p>This page needs completed screener responses from the same browser session. Return to the screener and submit all items before viewing results.</p>
+          <div class="btns" style="margin-top:14px;">
+            <a class="btn primary" href="screener.html">Go to screener</a>
+          </div>
+        </section>
+
+        <div id="resultsContent">
+          <section class="summary" id="summaryCard" aria-labelledby="summaryTitle">
+            <div class="summary-head">
+              <h2 id="summaryTitle">Summary</h2>
+            </div>
+            <div id="printMeta" class="print-only" style="font-size:12px;color:#333;margin-bottom:6px;"></div>
+            <p id="summaryBlurb" class="summary-blurb"></p>
+            <p class="summary-note">Use clinical judgement and local safety procedures. Scores support—not replace—professional decision-making.</p>
+          </section>
+
+          <div class="stack">
+            <div class="factor-grid">
+              <section class="card" aria-labelledby="f1Title">
+                <div class="card-head">
+                  <h2 id="f1Title">ST Exploitation Warning Signs</h2>
+                  <div class="scoreline">
+                    <span class="score-chip" id="f1ScoreChip">Score loading…</span>
+                    <span id="f1Nums" class="sr-only" aria-live="polite"></span>
+                  </div>
+                </div>
+
+                <div class="riskline" id="f1RiskLine">
+                  <span class="pill" id="f1Pill"><span class="ico"></span><span class="txt">Loading…</span></span>
+                  <span id="f1Blurb" class="factor-blurb"></span>
+                </div>
+
+                <div class="chart-wrap" aria-label="Exploitation spectrum indicator">
+                  <div class="chart-box">
+                    <div class="gauge" id="f1Gauge"><div class="pointer" id="f1Ptr" aria-hidden="true"></div></div>
+                    <div class="band-labels" id="f1Labels" role="group" aria-label="Risk bands">
+                      <span>Low</span><span>Slightly Elevated</span><span>Elevated</span><span>Very Elevated</span>
+                    </div>
+                  </div>
+                </div>
+
+                <details open>
+                  <summary>Confirmed risk items <span class="count-pill" id="f1ConfirmedCount">0</span></summary>
+                  <ul class="list" id="f1List"></ul>
+                </details>
+              </section>
+
+              <section class="card" aria-labelledby="f2Title">
+                <div class="card-head">
+                  <h2 id="f2Title">ST Recruitment Warning Signs</h2>
+                  <div class="scoreline">
+                    <span class="score-chip" id="f2ScoreChip">Score loading…</span>
+                    <span id="f2Nums" class="sr-only" aria-live="polite"></span>
+                  </div>
+                </div>
+
+                <div class="riskline" id="f2RiskLine">
+                  <span class="pill" id="f2Pill"><span class="ico"></span><span class="txt">Loading…</span></span>
+                  <span id="f2Blurb" class="factor-blurb"></span>
+                </div>
+
+                <div class="chart-wrap" aria-label="Recruitment spectrum indicator">
+                  <div class="chart-box">
+                    <div class="gauge" id="f2Gauge"><div class="pointer" id="f2Ptr" aria-hidden="true"></div></div>
+                    <div class="band-labels" id="f2Labels" role="group" aria-label="Risk bands">
+                      <span>Low</span><span>Slightly Elevated</span><span>Elevated</span><span>Very Elevated</span>
+                    </div>
+                  </div>
+                </div>
+
+                <details open>
+                  <summary>Confirmed risk items <span class="count-pill" id="f2ConfirmedCount">0</span></summary>
+                  <ul class="list" id="f2List"></ul>
+                </details>
+              </section>
+            </div>
+
+            <section class="card investigate-card" aria-labelledby="investigateTitle">
+              <h2 id="investigateTitle">Items to investigate <span class="count-pill" id="investigateCount">0</span></h2>
+              <details>
+                <summary>Items marked “No Info” or “Maybe”</summary>
+                <ul class="list" id="niCombined"></ul>
+              </details>
+            </section>
+
+            <div class="btns">
+              <button class="btn primary" id="printBtn" type="button">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8V4h10v4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2" stroke="currentColor" stroke-width="1.8"/><path d="M7 14h10v6H7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                Print / Save PDF
+              </button>
+
+              <a href="https://redcap.apps01.yorku.ca/surveys/?s=LXRM78JDTM" target="_blank" rel="noopener" class="btn">
+                Complete REDCap Survey
+              </a>
+
+              <span class="print-note">Tip: expand dropdowns before printing so all items appear on the PDF.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <small>
+        Developed by the Teen Relationships Lab at York University in partnership with York Region CAS and Simcoe-Muskoka Family Connexions.<br>
+        © 2025 Teen Relationships Lab, York University. No distribution of this tool outside your agency.
+      </small>
+    </footer>
+  </main>
+
+  <script>
+    // ---------- Data ----------
+    const F1_IDS = ['yst5b_sxl_prtn','yst5c_nn_dscls','yst5d_stis','yst5_ldr_prtnr','yst5f_bsv_prtn','yst7_cnnctns_x','yst7b_gang','yst7d_trffckn_','yst7e_hides_nf','yst8b_trnsprtt','yst8d_ntrnt_bh','yst8_trffckng','yst8f_awol','yst8h_id','yst8_rprts_sx','yst9_csh_nd_gd','yst9b_hotels','yst9c_cll_phns'];
+    const F2_IDS = ['yst1f_fnncll__','yst3a_sexul_bs','yst4_crgrvr_spr','yst4_pr_rltnsh','yst6c_fearful','yst6d_self_hrm','yst7f_neds_nmt','yst8c_schl_ttn','yst7c_xpsd_dr_','yst8a_sbstnc_s','yst1h_jstc_sys','yst6g_physcl_t','yst8g_housing','yst6f_chngd_pp'];
+    const ALL_IDS = [...F1_IDS, ...F2_IDS];
+
+    // Cut-offs
+    const CUTS = {
+      f1: { lowMax: 4, slightMin: 5, elevMin: 11, veryMin: 17, max: F1_IDS.length * 3 },
+      f2: { lowMax: 6, slightMin: 7, elevMin: 13, veryMin: 20, max: F2_IDS.length * 3 }
+    };
+
+    // Treat "1" as No Info by default
+    const TREAT_ONE_AS_NI = localStorage.getItem('YST_TREAT_ONE_AS_NI') !== '0';
+    const niRegex = /^(ni|no[\s_]?info|no[-\s]?information|unsure|unknown)$/i;
+
+    // Labels
+    const LABELS = {
+      yst5b_sxl_prtn: "Youth has had multiple sexual partners in the last year (4 or more)",
+      yst5c_nn_dscls: "Youth is non-disclosing when it comes to sharing about their romantic partner",
+      yst5d_stis: "Youth has been treated or tested for having multiple STIs/UTIs (e.g., kidney infections)",
+      yst5_ldr_prtnr: "Youth has romantic partners who are significantly older (e.g., significant age gap between youth and romantic partner—4 or more years).",
+      yst5f_bsv_prtn: "Youth has been exposed to an abusive or controlling intimate partner",
+      yst7_cnnctns_x: "Youth is connected to people who are exploited (i.e., trafficked), who buy or sell sex or who are known/suspected to be sex traffickers.",
+      yst7b_gang: "Youth has gang affiliation/contact (e.g., tattoos suggestive of branding or gang insignia).",
+      yst7d_trffckn_: "Youth spends time in locations that are known as venues for sex trafficking (e.g., physical or online spaces where youth congregate without caregiver supervision).",
+      yst7e_hides_nf: "Youth’s answers to questions about their age, whereabouts, residence, or relationships are vague or misleading.",
+      yst8b_trnsprtt: "Youth hitch-hikes or travels in cars with unknown individuals (e.g., receives or solicits drives from unknown individuals/strangers, has Ubers sent to them, has a driver).",
+      yst8d_ntrnt_bh: "Youth engages in concerning internet behaviour (e.g., posting, “sexting”, chatting or meeting  with strangers online possibly for sexual purposes, has been watched, filmed, or photographed in a sexually explicit manner).",
+      yst8_trffckng: "Youth uses language related to sex trafficking (e.g., “the game”)",
+      yst8f_awol: "Youth runs away/is gone and their whereabouts are unknown (e.g., for long periods of time, frequently for short durations, unexplained absence).",
+      yst8h_id: "Someone else is controlling the youth’s ID documents and/or contact with family or friends, leaving the youth socially isolated (i.e., controlling cell phone and social media use).",
+      yst8_rprts_sx: "Youth reports exchanging sex for money or material goods",
+      yst9_csh_nd_gd: "Youth has large amounts of unexplained cash, or expensive items (e.g., new purses, shoes, technical devices, gift cards, groceries being assisted by strangers).",
+      yst9b_hotels: "Youth frequents hotel rooms and/or has hotel key cards in their possession.",
+      yst9c_cll_phns: "Youth has several cell phones",
+      yst1f_fnncll__: "Youth is financially stable (e.g., has stable housing, caregiver is able to provide, children, pets, family obligations are met, is not being forced to give their money to someone)",
+      yst3a_sexul_bs: "Youth has experienced sexual abuse",
+      yst4_crgrvr_spr: "Parent/caregiver is unable to provide adequate supervision",
+      yst4_pr_rltnsh: "Youth has peer relationships that appear unsafe (e.g., peers who are a negative influence, significantly older peers, unstable peer group) and/or experiences social exclusion.",
+      yst6c_fearful: "Youth appears on edge, preoccupied with safety, or hypervigilant.",
+      yst6d_self_hrm: "Youth presents with self-harming behaviour and/or expresses suicidal ideation (i.e., thoughts about dying or ending life)",
+      yst7f_neds_nmt: "Youth describes basic needs as being unmet (e.g., financially and/or emotionally)",
+      yst8c_schl_ttn: "Youth has sporadic school attendance (e.g., skips multiple days or is not attending, attends to solicit other youth).",
+      yst7c_xpsd_dr_: "Youth is exposed to drugs/alcohol, and/or the buying and selling of drugs.",
+      yst8a_sbstnc_s: "Youth presents with substance use difficulties (e.g., appears to be under the influence, found with alcohol/drugs)",
+      yst1h_jstc_sys: "Youth has past or current involvement with the justice system (e.g., contact with police, involvement with criminal activities)",
+      yst6g_physcl_t: "Youth shows signs of physical trauma (e.g., black eyes, cigarette burns, or broken bones)",
+      yst8g_housing: "Youth lives outside of family/caregiver home (e.g., stays overnight at friends for extended time, periods of homelessness, unstable housing, with a boy/girlfriend), lives independently and/or is being housed by someone who is paying for their living expenses.",
+      yst6f_chngd_pp: "Youth presents a significant and sudden change in appearance (e.g., dress, hygiene, weight, tattoos)"
+    };
+
+    // ---------- Helpers ----------
+    function getStored(id) {
+      const raw = localStorage.getItem(id);
+      if (raw === null) return null;
+      const num = parseInt(raw, 10);
+      return isNaN(num) ? raw : num;
+    }
+
+    function countStoredItems() {
+      return ALL_IDS.reduce((acc, id) => acc + (localStorage.getItem(id) !== null ? 1 : 0), 0);
+    }
+
+    function sum(ids) {
+      return ids.reduce((acc, id) => {
+        const v = parseInt(localStorage.getItem(id) || '0', 10);
+        if (isNaN(v)) return acc;
+        if (TREAT_ONE_AS_NI && v === 1) return acc;
+        return acc + v;
+      }, 0);
+    }
+
+    function buildConfirmedList(ids) {
+      const out = [];
+      ids.forEach(id => {
+        const stored = parseInt(localStorage.getItem(id) || '0', 10);
+        if (!isNaN(stored) && stored === 3) out.push({ id });
+      });
+      return out;
+    }
+
+    function isNoInfo(id) {
+      const flag = localStorage.getItem(id + '_ni') === '1' || localStorage.getItem('ni_' + id) === '1';
+      const val = getStored(id);
+      if (flag) return true;
+      if (val === null) return false;
+      if (typeof val === 'number') return (TREAT_ONE_AS_NI && val === 1) || val === 2;
+      return niRegex.test(String(val));
+    }
+
+    function buildCombinedNI(idsA, idsB) {
+      return [...idsA, ...idsB].filter(id => isNoInfo(id));
+    }
+
+    // ---------- Band calculators ----------
+    function bandF1(score) {
+      if (score >= CUTS.f1.veryMin) return 'Very Elevated Risk';
+      if (score >= CUTS.f1.elevMin) return 'Elevated Risk';
+      if (score >= CUTS.f1.slightMin) return 'Slightly Elevated Risk';
+      return 'Low Risk';
+    }
+
+    function bandF2(score) {
+      if (score >= CUTS.f2.veryMin) return 'Very Elevated Risk';
+      if (score >= CUTS.f2.elevMin) return 'Elevated Risk';
+      if (score >= CUTS.f2.slightMin) return 'Slightly Elevated Risk';
+      return 'Low Risk';
+    }
+
+    function bandRange(cuts, band) {
+      if (band === 'Low Risk') return [0, cuts.lowMax];
+      if (band === 'Slightly Elevated Risk') return [cuts.slightMin, cuts.elevMin - 1];
+      if (band === 'Elevated Risk') return [cuts.elevMin, cuts.veryMin - 1];
+      return [cuts.veryMin, cuts.max];
+    }
+
+    function bandClass(band) {
+      if (band === 'Very Elevated Risk') return 'very';
+      if (band === 'Elevated Risk') return 'elev';
+      if (band === 'Slightly Elevated Risk') return 'slight';
+      return 'low';
+    }
+
+    function setRiskRow({ pillId, blurbId, band, factor }) {
+      const pill = document.getElementById(pillId);
+      const txt = pill.querySelector('.txt');
+      const ico = pill.querySelector('.ico');
+
+      pill.classList.remove('low', 'slight', 'elev', 'very');
+      pill.classList.add(bandClass(band));
+      txt.textContent = band;
+
+      let svg = '';
+      if (band === 'Low Risk') {
+        svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+      } else if (band === 'Slightly Elevated Risk') {
+        svg = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".18"/><line x1="12" y1="7" x2="12" y2="13" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="17" r="1.8" fill="currentColor"/></svg>';
+      } else {
+        svg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 22 20H2L12 2z" fill="currentColor" opacity=".20"></path><rect x="11" y="7" width="2" height="8" rx="1" fill="currentColor"></rect><rect x="11" y="16.5" width="2" height="2" rx="1" fill="currentColor"></rect></svg>';
+      }
+      ico.innerHTML = svg;
+
+      const domain = factor === 'f1' ? 'exploitation' : 'recruitment';
+      document.getElementById(blurbId).textContent =
+        band === 'Very Elevated Risk' ? `Ratings on this scale indicate that the youth presents with more ${domain} warning signs than 90% of other youth involved with child welfare.` :
+        band === 'Elevated Risk' ? `Ratings on this scale indicate that the youth presents with more ${domain} warning signs than 75% of other youth involved with child welfare.` :
+        band === 'Slightly Elevated Risk' ? `Ratings on this scale indicate that the youth presents with more ${domain} warning signs than 50% of other youth involved with child welfare.` :
+        `Ratings on this scale indicate that the youth has fewer or comparable ${domain} warning signs to other youth involved with child welfare.`;
+    }
+
+    function setGaugeWithinBand({ pointerId, labelsId, band, score, cuts }) {
+      const ptr = document.getElementById(pointerId);
+      const labels = document.getElementById(labelsId).querySelectorAll('span');
+      const idx = band === 'Very Elevated Risk' ? 3 : band === 'Elevated Risk' ? 2 : band === 'Slightly Elevated Risk' ? 1 : 0;
+
+      const sliceStart = idx * 25;
+      const inset = 3;
+      const usable = 25 - inset * 2;
+      const [bMin, bMax] = bandRange(cuts, band);
+      const denom = Math.max(1, bMax - bMin);
+      let rel = (score - bMin) / denom;
+      rel = Math.max(0, Math.min(1, rel));
+
+      ptr.style.left = `${sliceStart + inset + rel * usable}%`;
+
+      labels.forEach((el, i) => {
+        el.classList.remove('active', 'low', 'slight', 'elev', 'very');
+        if (i === idx) el.classList.add('active', ['low', 'slight', 'elev', 'very'][i]);
+      });
+    }
+
+    // Summaries
+    const VERBATIM = {
+      expoVE: "This youth is presenting with a significant number of exploitation warning signs placing them at a very elevated risk of sex trafficking involvement. Please follow agency guidelines and seek immediate support for the youth.",
+      expoE: "This youth is presenting with a significant number of exploitation warning signs placing them at an  elevated risk of sex trafficking involvement. Please follow agency guidelines and seek immediate support for the youth.",
+      bothHighSig: "This youth is presenting with a high number of  exploitation warning signs and a significant number of recruitment warning signs placing them at risk of sex trafficking involvement. Please follow agency guidelines and seek immediate support for the youth.",
+      bothHighHigh: "This youth is presenting with a high number of  exploitation warning signs and a high number of  recruitment warning signs placing them at risk of sex trafficking involvement. Please follow agency guidelines and seek immediate support for the youth.",
+      highExpoLowRec: "This youth is presenting with a high number of  exploitation warning signs and a low number of  recruitment warning signs placing them at risk of sex trafficking involvement. Please follow agency guidelines ensure immediate follow-up with the youth  and implement support.",
+      recVE: "This youth is presenting with a significant number of recruitment warning signs placing them at a very elevated  risk of sex trafficking recruitment. Please follow agency guidelines to ensure immediate follow-up with the youth and take steps to prevent further recruitment risk",
+      recE: "This youth is presenting with a significant number of recruitment warning signs placing them at an elevated risk of sex trafficking recruitment. Please follow agency guidelines to ensure immediate follow-up with the youth and take steps to prevent further recruitment risk",
+      recSlight: "This youth is presenting with a high number of recruitment warning signs placing them at risk of sex trafficking recruitment. Please follow agency guidelines to ensure immediate follow-up with the youth and take steps to prevent further recruitment risk.",
+      bothLow: "This youth is presenting with a low number of  exploitation and recruitment warning signs placing them at low risk of sex trafficking involvement and recruitment. Continue to monitor for any indicators, and use your clinical judgment. Note that a low score does not rule out risk; youth may still present concerning indicators or circumstances requiring attention."
+    };
+
+    function chooseSummary(f1, f2) {
+      if (f1 >= CUTS.f1.veryMin) return VERBATIM.expoVE;
+      if (f1 >= CUTS.f1.elevMin) return VERBATIM.expoE;
+      if (f1 >= CUTS.f1.slightMin && f2 >= CUTS.f2.elevMin) return VERBATIM.bothHighSig;
+      if (f1 >= CUTS.f1.slightMin && f2 >= CUTS.f2.slightMin) return VERBATIM.bothHighHigh;
+      if (f1 >= CUTS.f1.slightMin && f2 <= CUTS.f2.lowMax) return VERBATIM.highExpoLowRec;
+      if (f1 <= CUTS.f1.lowMax && f2 >= CUTS.f2.veryMin) return VERBATIM.recVE;
+      if (f1 <= CUTS.f1.lowMax && f2 >= CUTS.f2.elevMin) return VERBATIM.recE;
+      if (f1 <= CUTS.f1.lowMax && f2 >= CUTS.f2.slightMin) return VERBATIM.recSlight;
+      return VERBATIM.bothLow;
+    }
+
+    // ---------- Render ----------
+    function fillConfirmed(ids, ulId, countId) {
+      const ul = document.getElementById(ulId);
+      ul.innerHTML = '';
+      const items = buildConfirmedList(ids);
+      document.getElementById(countId).textContent = items.length;
+
+      if (!items.length) {
+        ul.innerHTML = '<li>No items to display.</li>';
+        return;
+      }
+
+      items.forEach(({ id }) => {
+        const li = document.createElement('li');
+        li.textContent = LABELS[id] || id;
+        ul.appendChild(li);
+      });
+    }
+
+    function fillCombinedNI(ulId) {
+      const ul = document.getElementById(ulId);
+      ul.innerHTML = '';
+      const items = buildCombinedNI(F1_IDS, F2_IDS);
+      document.getElementById('investigateCount').textContent = items.length;
+
+      if (!items.length) {
+        ul.innerHTML = '<li>No “No Info” or “Maybe” items.</li>';
+        return;
+      }
+
+      items.forEach(id => {
+        const li = document.createElement('li');
+        li.textContent = LABELS[id] || id;
+        ul.appendChild(li);
+      });
+    }
+
+    function render() {
+      const storedCount = countStoredItems();
+      if (storedCount === 0) {
+        document.body.classList.add('no-data');
+        return;
+      }
+
+      const dt = new Date();
+      const stamp = dt.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+      document.getElementById('printMeta').textContent = `Screened on ${stamp} • This printout is generated from a device-only session.`;
+
+      const f1 = sum(F1_IDS);
+      const f2 = sum(F2_IDS);
+      const B1 = bandF1(f1);
+      const B2 = bandF2(f2);
+
+      document.getElementById('f1ScoreChip').textContent = `Score: ${f1}/${CUTS.f1.max}`;
+      document.getElementById('f2ScoreChip').textContent = `Score: ${f2}/${CUTS.f2.max}`;
+      document.getElementById('f1Nums').textContent = `Exploitation score ${f1} out of ${CUTS.f1.max}; ${B1}`;
+      document.getElementById('f2Nums').textContent = `Recruitment score ${f2} out of ${CUTS.f2.max}; ${B2}`;
+
+      setRiskRow({ pillId: 'f1Pill', blurbId: 'f1Blurb', band: B1, factor: 'f1' });
+      setRiskRow({ pillId: 'f2Pill', blurbId: 'f2Blurb', band: B2, factor: 'f2' });
+      setGaugeWithinBand({ pointerId: 'f1Ptr', labelsId: 'f1Labels', band: B1, score: f1, cuts: CUTS.f1 });
+      setGaugeWithinBand({ pointerId: 'f2Ptr', labelsId: 'f2Labels', band: B2, score: f2, cuts: CUTS.f2 });
+
+      document.getElementById('summaryBlurb').textContent = chooseSummary(f1, f2);
+      fillConfirmed(F1_IDS, 'f1List', 'f1ConfirmedCount');
+      fillConfirmed(F2_IDS, 'f2List', 'f2ConfirmedCount');
+      fillCombinedNI('niCombined');
+    }
+
+    function clearKeys() {
+      ALL_IDS.forEach(id => {
+        localStorage.removeItem(id);
+        localStorage.removeItem(id + '_ni');
+        localStorage.removeItem('ni_' + id);
+      });
+      localStorage.removeItem('factor1_score');
+      localStorage.removeItem('factor2_score');
+    }
+
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+    render();
+    window.addEventListener('pagehide', clearKeys);
+    window.addEventListener('beforeunload', clearKeys);
+  </script>
+</body>
+</html>
