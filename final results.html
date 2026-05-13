@@ -207,10 +207,6 @@
       gap: 16px;
     }
 
-    @media (min-width: 860px) {
-      .factor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
     .card {
       padding: 18px;
       border-radius: var(--radius-md);
@@ -557,10 +553,7 @@
               <section class="card" aria-labelledby="f1Title">
                 <div class="card-head">
                   <h2 id="f1Title">ST Exploitation Warning Signs</h2>
-                  <div class="scoreline">
-                    <span class="score-chip" id="f1ScoreChip">Score loading…</span>
-                    <span id="f1Nums" class="sr-only" aria-live="polite"></span>
-                  </div>
+                  <span id="f1Nums" class="sr-only" aria-live="polite"></span>
                 </div>
 
                 <div class="riskline" id="f1RiskLine">
@@ -586,10 +579,7 @@
               <section class="card" aria-labelledby="f2Title">
                 <div class="card-head">
                   <h2 id="f2Title">ST Recruitment Warning Signs</h2>
-                  <div class="scoreline">
-                    <span class="score-chip" id="f2ScoreChip">Score loading…</span>
-                    <span id="f2Nums" class="sr-only" aria-live="polite"></span>
-                  </div>
+                  <span id="f2Nums" class="sr-only" aria-live="polite"></span>
                 </div>
 
                 <div class="riskline" id="f2RiskLine">
@@ -896,8 +886,6 @@
       const B1 = bandF1(f1);
       const B2 = bandF2(f2);
 
-      document.getElementById('f1ScoreChip').textContent = `Score: ${f1}/${CUTS.f1.max}`;
-      document.getElementById('f2ScoreChip').textContent = `Score: ${f2}/${CUTS.f2.max}`;
       document.getElementById('f1Nums').textContent = `Exploitation score ${f1} out of ${CUTS.f1.max}; ${B1}`;
       document.getElementById('f2Nums').textContent = `Recruitment score ${f2} out of ${CUTS.f2.max}; ${B2}`;
 
