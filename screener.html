@@ -163,24 +163,10 @@
       line-height: 1.55;
     }
 
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .meta-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 36px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.80);
+    .time-note {
+      margin-top: 8px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
     }
 
@@ -193,11 +179,11 @@
     }
 
     .instruction-card {
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       padding: 18px;
-      border-radius: var(--radius-md);
-      background: var(--card-soft);
-      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      border: 2px solid #cc0000;
       box-shadow: var(--shadow-soft);
     }
 
@@ -242,51 +228,6 @@
 
     .key-item strong { display: block; font-size: 14px; }
     .hint { margin-top: 3px; color: var(--muted); font-size: 12.5px; line-height: 1.35; }
-
-    .form-tools {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin: 0 -18px 14px;
-      padding: 10px 18px;
-      background: rgba(255,255,255,.92);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(10px);
-    }
-
-    @media (min-width: 720px) {
-      .form-tools { margin: 0 -34px 18px; padding-inline: 34px; }
-    }
-
-    .form-tools span {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .ghost-button {
-      border: 1px solid var(--border-strong);
-      background: #fff;
-      color: var(--ink-soft);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
-    }
-
-    .ghost-button:hover {
-      border-color: var(--york-red);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .ghost-button:active { transform: translateY(1px); }
 
     form { margin: 0; }
 
@@ -524,17 +465,6 @@
       font-weight: 600;
     }
 
-    .side-note {
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 16px;
-      background: var(--card-soft);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
     .mobile-progress {
       position: fixed;
       left: 0;
@@ -604,35 +534,18 @@
   <a href="#combined-form" class="skip-link">Skip to screening items</a>
 
   <main class="wrap">
-    <header class="topbar" aria-label="Site header">
-      <div class="brand-mark">
-        <span class="brand-shield" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/>
-            <path d="M8.8 12.3l2.1 2.1 4.5-4.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        <span>YST Screener</span>
-      </div>
-      <span>Secure pilot tool</span>
-    </header>
-
     <div class="layout">
       <section class="hero panel" aria-labelledby="title">
         <div class="hero-head">
           <div class="eyebrow">York-Simcoe Sex Trafficking Screener</div>
           <h1 id="title">Screening items</h1>
+          <div class="time-note">Takes approximately 10-15 minutes to complete.</div>
           <p class="lede">Complete each item using your clinical judgement. The form saves scored responses locally and sends you to the results page once all items are answered.</p>
-          <div class="meta-row" aria-label="Form details">
-            <span class="meta-chip">10–15 minutes</span>
-            <span class="meta-chip">32 items</span>
-            <span class="meta-chip">Required responses</span>
-          </div>
         </div>
 
         <div class="content">
           <section class="instruction-card" aria-labelledby="key-title">
-            <h2 id="key-title">For each item listed below, select one option:</h2>
+            <h2 id="key-title">For each item listed below, using your clinical judgement, please check one of the following options:</h2>
             <ul class="key-grid" aria-label="Answer options">
               <li class="key-item"><span class="key-dot" aria-hidden="true"></span><div><strong>No Info</strong><div class="hint">Information not available to make a judgment.</div></div></li>
               <li class="key-item"><span class="key-dot" aria-hidden="true"></span><div><strong>No</strong><div class="hint">Information available and definitively not present.</div></div></li>
@@ -642,23 +555,18 @@
           </section>
 
           <form id="combined-form" novalidate>
-            <div class="form-tools">
-              <span id="questionStatus">0 of 32 answered</span>
-              <button type="button" class="ghost-button" id="jumpMissingBtn">Jump to first missing</button>
-            </div>
-
             <div id="question-list" class="question-list"></div>
 
             <div class="cta">
               <button type="button" class="btn-primary" id="submitBtn">Submit &amp; View Results</button>
-              <p class="submit-note">All questions must be answered before results can be generated.</p>
+              <p class="submit-note">All questions must be answered before results can be accessed.</p>
             </div>
           </form>
 
           <footer>
             <small>
               Developed by the Teen Relationships Lab at York University in partnership with York Region CAS and Simcoe-Muskoka Family Connexions.<br>
-              © 2025 Teen Relationships Lab, York University. No distribution of this tool outside your agency.
+              © 2026 Teen Relationships Lab, York University. No distribution of this tool outside your agency.
             </small>
           </footer>
         </div>
@@ -671,8 +579,7 @@
             <span class="progress-pct" id="progressPct">0%</span>
           </div>
           <div class="bar" aria-hidden="true"><div class="fill" id="barFill"></div></div>
-          <div class="progress-meta"><span id="progressCount">0/32 answered</span><span id="remainingCount">32 left</span></div>
-          <div class="side-note">Tip: selecting an option automatically updates progress. Missing items will be highlighted if you try to submit early.</div>
+          <div class="progress-meta"><span id="progressCount">0/32 answered</span><span id="progressPctMeta">0%</span></div>
         </div>
       </aside>
     </div>
@@ -826,10 +733,9 @@
       const remaining = total - answered;
       const pct = total ? Math.round((answered / total) * 100) : 0;
 
-      document.getElementById('questionStatus').textContent = `${answered} of ${total} answered`;
       document.getElementById('progressCount').textContent = `${answered}/${total} answered`;
-      document.getElementById('remainingCount').textContent = remaining === 1 ? '1 left' : `${remaining} left`;
       document.getElementById('progressPct').textContent = `${pct}%`;
+      document.getElementById('progressPctMeta').textContent = `${pct}%`;
       document.getElementById('barFill').style.width = `${pct}%`;
 
       document.getElementById('progressCountMobile').textContent = `${answered}/${total}`;
@@ -917,16 +823,6 @@
       localStorage.setItem('factor2_score', String(f2Score));
       return true;
     }
-
-    document.getElementById('jumpMissingBtn').addEventListener('click', () => {
-      const field = getFirstMissingField();
-      if (field) {
-        field.classList.add('missing');
-        focusField(field);
-      } else {
-        showToast('All items are answered.');
-      }
-    });
 
     document.getElementById('submitBtn').addEventListener('click', () => {
       if (validateAndScore()) {
