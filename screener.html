@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screening Items — York-Simcoe Sex Trafficking Screener (YST)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --york-red: #E31837;
+      --york-red-dark: #A70F1D;
+      --york-red-soft: #FFF0F3;
+      --ink: #171717;
+      --ink-soft: #333333;
+      --muted: #666666;
+      --muted-2: #8A8A8A;
+      --bg: #F7F5F2;
+      --card: #FFFFFF;
+      --card-soft: #FCFBFA;
+      --border: #E4DFD8;
+      --border-strong: #D4CCC2;
+      --focus: #20A7D8;
+      --warn: #D93025;
+      --shadow: 0 18px 50px rgba(30, 24, 20, .08);
+      --shadow-soft: 0 8px 22px rgba(30, 24, 20, .06);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(227, 24, 55, .10), transparent 34rem),
+        linear-gradient(180deg, #FFFCFA 0%, var(--bg) 48%, #F4F0EC 100%);
+      padding: 28px 16px 92px;
+    }
+
+    a { color: var(--york-red); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+    button, input { font: inherit; }
+
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: -60px;
+      background: var(--ink);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      z-index: 100;
+    }
+    .skip-link:focus { top: 16px; }
+
+    .wrap {
+      width: min(100%, var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .brand-shield {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--york-red);
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(227, 24, 55, .22);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (min-width: 1040px) {
+      body { padding-top: 36px; }
+      .layout { grid-template-columns: minmax(0, 760px) 320px; align-items: start; }
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, .94);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      overflow: hidden;
+    }
+
+    .hero-head {
+      position: relative;
+      padding: 28px 24px 22px;
+      border-bottom: 1px solid var(--border);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.96), rgba(255,240,243,.82)),
+        radial-gradient(circle at 90% 10%, rgba(227,24,55,.16), transparent 18rem);
+    }
+
+    @media (min-width: 720px) {
+      .hero-head { padding: 34px 34px 26px; }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 7px 12px;
+      border: 1px solid rgba(227, 24, 55, .20);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--york-red-dark);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0;
+      font-size: clamp(31px, 5vw, 54px);
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+
+    .lede {
+      max-width: 670px;
+      margin: 14px 0 0;
+      color: var(--ink-soft);
+      font-size: clamp(15px, 2vw, 17px);
+      line-height: 1.55;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.80);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    @media (min-width: 720px) {
+      .content { padding: 24px 34px 34px; }
+    }
+
+    .instruction-card {
+      margin-bottom: 18px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--card-soft);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .instruction-card h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      line-height: 1.35;
+      letter-spacing: -.01em;
+    }
+
+    .key-grid {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 620px) {
+      .key-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    .key-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .key-dot {
+      flex: 0 0 auto;
+      width: 10px;
+      height: 10px;
+      margin-top: 5px;
+      border-radius: 999px;
+      background: var(--york-red);
+    }
+
+    .key-item strong { display: block; font-size: 14px; }
+    .hint { margin-top: 3px; color: var(--muted); font-size: 12.5px; line-height: 1.35; }
+
+    .form-tools {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 0 -18px 14px;
+      padding: 10px 18px;
+      background: rgba(255,255,255,.92);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    @media (min-width: 720px) {
+      .form-tools { margin: 0 -34px 18px; padding-inline: 34px; }
+    }
+
+    .form-tools span {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .ghost-button {
+      border: 1px solid var(--border-strong);
+      background: #fff;
+      color: var(--ink-soft);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+    }
+
+    .ghost-button:hover {
+      border-color: var(--york-red);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .ghost-button:active { transform: translateY(1px); }
+
+    form { margin: 0; }
+
+    .question-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      position: relative;
+      margin: 0;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(30,24,20,.035);
+      transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease;
+    }
+
+    .field:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .field.answered {
+      border-color: rgba(227,24,55,.25);
+      background: linear-gradient(180deg, #fff, #FFFEFD);
+    }
+
+    .field.missing {
+      border-color: var(--warn);
+      box-shadow: 0 0 0 4px rgba(217,48,37,.12), var(--shadow-soft);
+    }
+
+    .field legend {
+      width: 100%;
+      margin: 0 0 12px;
+      padding: 0;
+      color: var(--ink);
+      font-size: 15.5px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .question-number {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
+      border-radius: 10px;
+      background: var(--york-red-soft);
+      color: var(--york-red-dark);
+      font-size: 13px;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    .field em { font-style: italic; font-weight: 500; color: var(--muted); }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    @media (min-width: 680px) {
+      .choices { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    .choice {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card-soft);
+      cursor: pointer;
+      user-select: none;
+      color: var(--ink-soft);
+      font-weight: 700;
+      font-size: 14px;
+      transition: background .15s ease, border-color .15s ease, color .15s ease, transform .15s ease, box-shadow .15s ease;
+    }
+
+    .choice:hover {
+      border-color: rgba(227, 24, 55, .35);
+      background: #fff;
+    }
+
+    .choice input[type="radio"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .choice .radio-visual {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border-strong);
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: inset 0 0 0 4px #fff;
+      transition: border-color .15s ease, background .15s ease;
+    }
+
+    .choice:has(input:checked) {
+      border-color: var(--york-red);
+      background: var(--york-red-soft);
+      color: var(--york-red-dark);
+      box-shadow: 0 8px 20px rgba(227, 24, 55, .10);
+    }
+
+    .choice:has(input:checked) .radio-visual {
+      border-color: var(--york-red);
+      background: var(--york-red);
+    }
+
+    .choice:has(input:focus-visible) {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .cta {
+      margin-top: 22px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      min-height: 54px;
+      border: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--york-red), var(--york-red-dark));
+      color: #fff;
+      padding: 15px 20px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(227, 24, 55, .24);
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+    }
+
+    .btn-primary:hover {
+      filter: saturate(1.08);
+      box-shadow: 0 18px 36px rgba(227, 24, 55, .30);
+    }
+
+    .btn-primary:active { transform: translateY(1px); }
+
+    .submit-note {
+      margin: 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.4;
+    }
+
+    footer {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .rail {
+      display: none;
+    }
+
+    @media (min-width: 1040px) {
+      .rail {
+        display: block;
+        position: sticky;
+        top: 24px;
+      }
+    }
+
+    .progress-card {
+      padding: 18px;
+    }
+
+    .progress-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .progress-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+    }
+
+    .progress-pct {
+      color: var(--york-red-dark);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -.03em;
+    }
+
+    .bar {
+      height: 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      background: #F1ECE7;
+    }
+
+    .fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--york-red), var(--york-red-dark));
+      transition: width .22s ease;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .side-note {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--card-soft);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .mobile-progress {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -12px 30px rgba(30,24,20,.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .mobile-progress-inner {
+      width: min(100%, var(--max));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (min-width: 1040px) {
+      body { padding-bottom: 44px; }
+      .mobile-progress { display: none; }
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 78px;
+      transform: translateX(-50%) translateY(14px);
+      width: min(92vw, 480px);
+      padding: 13px 15px;
+      border-radius: 16px;
+      background: #241C1D;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+      box-shadow: 0 18px 40px rgba(0,0,0,.22);
+      z-index: 90;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#combined-form" class="skip-link">Skip to screening items</a>
+
+  <main class="wrap">
+    <header class="topbar" aria-label="Site header">
+      <div class="brand-mark">
+        <span class="brand-shield" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M8.8 12.3l2.1 2.1 4.5-4.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>YST Screener</span>
+      </div>
+      <span>Secure pilot tool</span>
+    </header>
+
+    <div class="layout">
+      <section class="hero panel" aria-labelledby="title">
+        <div class="hero-head">
+          <div class="eyebrow">York-Simcoe Sex Trafficking Screener</div>
+          <h1 id="title">Screening items</h1>
+          <p class="lede">Complete each item using your clinical judgement. The form saves scored responses locally and sends you to the results page once all items are answered.</p>
+          <div class="meta-row" aria-label="Form details">
+            <span class="meta-chip">10–15 minutes</span>
+            <span class="meta-chip">32 items</span>
+            <span class="meta-chip">Required responses</span>
+          </div>
+        </div>
+
+        <div class="content">
+          <section class="instruction-card" aria-labelledby="key-title">
+            <h2 id="key-title">For each item listed below, select one option:</h2>
+            <ul class="key-grid" aria-label="Answer options">
+              <li class="key-item"><span class="key-dot" aria-hidden="true"></span><div><strong>No Info</strong><div class="hint">Information not available to make a judgment.</div></div></li>
+              <li class="key-item"><span class="key-dot" aria-hidden="true"></span><div><strong>No</strong><div class="hint">Information available and definitively not present.</div></div></li>
+              <li class="key-item"><span class="key-dot" aria-hidden="true"></span><div><strong>Maybe</strong><div class="hint">Information available and might be present.</div></div></li>
+              <li class="key-item"><span class="key-dot" aria-hidden="true"></span><div><strong>Yes</strong><div class="hint">Information available and definitively present.</div></div></li>
+            </ul>
+          </section>
+
+          <form id="combined-form" novalidate>
+            <div class="form-tools">
+              <span id="questionStatus">0 of 32 answered</span>
+              <button type="button" class="ghost-button" id="jumpMissingBtn">Jump to first missing</button>
+            </div>
+
+            <div id="question-list" class="question-list"></div>
+
+            <div class="cta">
+              <button type="button" class="btn-primary" id="submitBtn">Submit &amp; View Results</button>
+              <p class="submit-note">All questions must be answered before results can be generated.</p>
+            </div>
+          </form>
+
+          <footer>
+            <small>
+              Developed by the Teen Relationships Lab at York University in partnership with York Region CAS and Simcoe-Muskoka Family Connexions.<br>
+              © 2025 Teen Relationships Lab, York University. No distribution of this tool outside your agency.
+            </small>
+          </footer>
+        </div>
+      </section>
+
+      <aside class="rail" aria-label="Completion progress">
+        <div class="progress-card panel">
+          <div class="progress-title-row">
+            <p class="progress-title">Progress</p>
+            <span class="progress-pct" id="progressPct">0%</span>
+          </div>
+          <div class="bar" aria-hidden="true"><div class="fill" id="barFill"></div></div>
+          <div class="progress-meta"><span id="progressCount">0/32 answered</span><span id="remainingCount">32 left</span></div>
+          <div class="side-note">Tip: selecting an option automatically updates progress. Missing items will be highlighted if you try to submit early.</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="mobile-progress" role="status" aria-live="polite">
+    <div class="mobile-progress-inner">
+      <span id="progressCountMobile">0/32</span>
+      <div class="bar" aria-hidden="true"><div class="fill" id="barFillMobile"></div></div>
+      <span id="progressPctMobile">0%</span>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Please answer all questions before continuing.</div>
+
+  <script>
+    function italicizeParentheticals(text) {
+      return text.replace(/\(([^)]+)\)/g, '<em>($1)</em>');
+    }
+
+    const BANK = {
+      yst1f_fnncll__: { id: "yst1f_fnncll__", text: "Youth is financially stable (e.g., has stable housing, caregiver is able to provide, children, pets, family obligations are met, is not being forced to give their money to someone)", reverse: true },
+      yst1h_jstc_sys: { id: "yst1h_jstc_sys", text: "Youth has past or current involvement with the justice system (e.g., contact with police, involvement with criminal activities)" },
+      yst3a_sexul_bs: { id: "yst3a_sexul_bs", text: "Youth has experienced sexual abuse" },
+      yst4_crgrvr_spr: { id: "yst4_crgrvr_spr", text: "Parent/caregiver is unable to provide adequate supervision" },
+      yst4_pr_rltnsh: { id: "yst4_pr_rltnsh", text: "Youth has peer relationships that appear unsafe (e.g., peers who are a negative influence, significantly older peers, unstable peer group) and/or experiences social exclusion." },
+      yst5b_sxl_prtn: { id: "yst5b_sxl_prtn", text: "Youth has had multiple sexual partners in the last year (4 or more)" },
+      yst5c_nn_dscls: { id: "yst5c_nn_dscls", text: "Youth is non-disclosing when it comes to sharing about their romantic partner" },
+      yst5d_stis: { id: "yst5d_stis", text: "Youth has been treated or tested for having multiple STIs/UTIs (e.g., kidney infections)" },
+      yst5_ldr_prtnr: { id: "yst5_ldr_prtnr", text: "Youth has romantic partners who are significantly older (e.g., significant age gap between youth and romantic partner—4 or more years)." },
+      yst5f_bsv_prtn: { id: "yst5f_bsv_prtn", text: "Youth has been exposed to an abusive or controlling intimate partner" },
+      yst6c_fearful: { id: "yst6c_fearful", text: "Youth appears on edge, preoccupied with safety, fearful, or hypervigilant." },
+      yst6d_self_hrm: { id: "yst6d_self_hrm", text: "Youth presents with self-harming behaviour and/or expresses suicidal ideation (i.e., thoughts about dying or ending life)" },
+      yst6f_chngd_pp: { id: "yst6f_chngd_pp", text: "Youth presents a significant and sudden change in appearance (e.g., dress, hygiene, weight, tattoos)" },
+      yst6g_physcl_t: { id: "yst6g_physcl_t", text: "Youth shows signs of physical trauma (e.g., black eyes, cigarette burns, or broken bones)" },
+      yst7_cnnctns_x: { id: "yst7_cnnctns_x", text: "Youth is connected to people who are exploited (i.e., trafficked), who buy or sell sex or who are known/suspected to be sex traffickers." },
+      yst7b_gang: { id: "yst7b_gang", text: "Youth has gang affiliation/contact (e.g., tattoos suggestive of branding or gang insignia)." },
+      yst7c_xpsd_dr_: { id: "yst7c_xpsd_dr_", text: "Youth is exposed to drugs/alcohol, and/or the buying and selling of drugs." },
+      yst7d_trffckn_: { id: "yst7d_trffckn_", text: "Youth spends time in locations that are known as venues for sex trafficking (e.g., physical or online spaces where youth congregate without caregiver supervision)." },
+      yst7e_hides_nf: { id: "yst7e_hides_nf", text: "Youth’s answers to questions about their age, whereabouts, residence, or relationships are vague or misleading." },
+      yst7f_neds_nmt: { id: "yst7f_neds_nmt", text: "Youth describes basic needs as being unmet (e.g., financially and/or emotionally)" },
+      yst8a_sbstnc_s: { id: "yst8a_sbstnc_s", text: "Youth presents with substance use difficulties (e.g., appears to be under the influence, found with alcohol/drugs)" },
+      yst8b_trnsprtt: { id: "yst8b_trnsprtt", text: "Youth hitch-hikes or travels in cars with unknown individuals (e.g., receives or solicits drives from unknown individuals/strangers, has Ubers sent to them, has a driver)." },
+      yst8c_schl_ttn: { id: "yst8c_schl_ttn", text: "Youth has sporadic school attendance (e.g., skips multiple days or is not attending, attends to solicit other youth)." },
+      yst8d_ntrnt_bh: { id: "yst8d_ntrnt_bh", text: "Youth engages in concerning internet behaviour (e.g., posting, “sexting”, chatting or meeting with strangers online possibly for sexual purposes, has been watched, filmed, or photographed in a sexually explicit manner)." },
+      yst8_trffckng: { id: "yst8_trffckng", text: "Youth uses language related to sex trafficking (e.g., “the game”)" },
+      yst8f_awol: { id: "yst8f_awol", text: "Youth runs away/is gone and their whereabouts are unknown (e.g., for long periods of time, frequently for short durations, unexplained absence)." },
+      yst8g_housing: { id: "yst8g_housing", text: "Youth lives outside of family/caregiver home (e.g., stays overnight at friends for extended time, periods of homelessness, unstable housing, with a boy/girlfriend), lives independently and/or is being housed by someone who is paying for their living expenses." },
+      yst8h_id: { id: "yst8h_id", text: "Someone else is controlling the youth’s ID documents and/or contact with family or friends, leaving the youth socially isolated (i.e., controlling cell phone and social media use)." },
+      yst8_rprts_sx: { id: "yst8_rprts_sx", text: "Youth reports exchanging sex for money or material goods" },
+      yst9_csh_nd_gd: { id: "yst9_csh_nd_gd", text: "Youth has large amounts of unexplained cash, or expensive items (e.g., new purses, shoes, technical devices, gift cards, groceries being assisted by strangers)." },
+      yst9b_hotels: { id: "yst9b_hotels", text: "Youth frequents hotel rooms and/or has hotel key cards in their possession." },
+      yst9c_cll_phns: { id: "yst9c_cll_phns", text: "Youth has several cell phones" }
+    };
+
+    const orderedIds = [
+      'yst1f_fnncll__','yst1h_jstc_sys','yst3a_sexul_bs','yst4_crgrvr_spr','yst4_pr_rltnsh',
+      'yst5b_sxl_prtn','yst5c_nn_dscls','yst5d_stis','yst5_ldr_prtnr','yst5f_bsv_prtn',
+      'yst6c_fearful','yst6d_self_hrm','yst6f_chngd_pp','yst6g_physcl_t',
+      'yst7_cnnctns_x','yst7b_gang','yst7c_xpsd_dr_','yst7d_trffckn_','yst7e_hides_nf','yst7f_neds_nmt',
+      'yst8a_sbstnc_s','yst8b_trnsprtt','yst8c_schl_ttn','yst8d_ntrnt_bh','yst8_trffckng','yst8f_awol','yst8g_housing','yst8h_id','yst8_rprts_sx',
+      'yst9_csh_nd_gd','yst9b_hotels','yst9c_cll_phns'
+    ];
+
+    const orderedQuestions = orderedIds.map(id => BANK[id]).filter(Boolean);
+
+    const factor1Set = new Set([
+      'yst5b_sxl_prtn','yst5c_nn_dscls','yst5d_stis','yst5_ldr_prtnr','yst5f_bsv_prtn',
+      'yst7_cnnctns_x','yst7b_gang','yst7d_trffckn_','yst7e_hides_nf',
+      'yst8b_trnsprtt','yst8d_ntrnt_bh','yst8_trffckng','yst8f_awol','yst8h_id',
+      'yst8_rprts_sx','yst9_csh_nd_gd','yst9b_hotels','yst9c_cll_phns'
+    ]);
+
+    const factor2Set = new Set([
+      'yst1f_fnncll__','yst3a_sexul_bs','yst4_crgrvr_spr','yst4_pr_rltnsh','yst6c_fearful','yst6d_self_hrm',
+      'yst7f_neds_nmt','yst8c_schl_ttn','yst7c_xpsd_dr_','yst8a_sbstnc_s','yst1h_jstc_sys','yst6g_physcl_t',
+      'yst8g_housing','yst6f_chngd_pp'
+    ]);
+
+    const options = [
+      { label: 'No Info', value: 1 },
+      { label: 'No', value: 0 },
+      { label: 'Maybe', value: 2 },
+      { label: 'Yes', value: 3 }
+    ];
+
+    const total = orderedQuestions.length;
+    const questionList = document.getElementById('question-list');
+    const toast = document.getElementById('toast');
+    let toastTimer;
+
+    function renderRadioGroup(q, idx) {
+      const field = document.createElement('fieldset');
+      field.className = 'field';
+      field.id = `field_${q.id}`;
+
+      const legend = document.createElement('legend');
+      legend.id = `label_${q.id}`;
+      legend.innerHTML = `<span class="question-number">${idx + 1}</span>${italicizeParentheticals(q.text)}`;
+      field.appendChild(legend);
+
+      const group = document.createElement('div');
+      group.className = 'choices';
+      group.setAttribute('role', 'radiogroup');
+      group.setAttribute('aria-labelledby', `label_${q.id}`);
+
+      options.forEach((opt) => {
+        const choiceId = `${q.id}_${opt.value}`;
+        const label = document.createElement('label');
+        label.className = 'choice';
+        label.setAttribute('for', choiceId);
+
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = q.id;
+        input.id = choiceId;
+        input.value = String(opt.value);
+        input.required = true;
+        input.addEventListener('change', () => {
+          field.classList.remove('missing');
+          field.classList.add('answered');
+          updateProgress();
+        });
+
+        const visual = document.createElement('span');
+        visual.className = 'radio-visual';
+        visual.setAttribute('aria-hidden', 'true');
+
+        const txt = document.createElement('span');
+        txt.textContent = opt.label;
+
+        label.append(input, visual, txt);
+        group.appendChild(label);
+      });
+
+      field.appendChild(group);
+      questionList.appendChild(field);
+    }
+
+    function renderAll() {
+      orderedQuestions.forEach(renderRadioGroup);
+      updateProgress();
+    }
+
+    function getAnsweredCount() {
+      return orderedQuestions.reduce((acc, q) => acc + (document.querySelector(`input[name="${q.id}"]:checked`) ? 1 : 0), 0);
+    }
+
+    function updateProgress() {
+      const answered = getAnsweredCount();
+      const remaining = total - answered;
+      const pct = total ? Math.round((answered / total) * 100) : 0;
+
+      document.getElementById('questionStatus').textContent = `${answered} of ${total} answered`;
+      document.getElementById('progressCount').textContent = `${answered}/${total} answered`;
+      document.getElementById('remainingCount').textContent = remaining === 1 ? '1 left' : `${remaining} left`;
+      document.getElementById('progressPct').textContent = `${pct}%`;
+      document.getElementById('barFill').style.width = `${pct}%`;
+
+      document.getElementById('progressCountMobile').textContent = `${answered}/${total}`;
+      document.getElementById('progressPctMobile').textContent = `${pct}%`;
+      document.getElementById('barFillMobile').style.width = `${pct}%`;
+    }
+
+    function reverseScorePreservingNI(raw) {
+      if (raw === 1) return 1;
+      if (raw === 2) return 2;
+      if (raw === 0) return 3;
+      if (raw === 3) return 0;
+      return raw;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    function getFirstMissingField() {
+      for (const q of orderedQuestions) {
+        if (!document.querySelector(`input[name="${q.id}"]:checked`)) {
+          return document.getElementById(`field_${q.id}`);
+        }
+      }
+      return null;
+    }
+
+    function focusField(field) {
+      if (!field) return;
+      field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const input = field.querySelector('input[type="radio"]');
+      setTimeout(() => input?.focus({ preventScroll: true }), 250);
+    }
+
+    function validateAndScore() {
+      let allFilled = true;
+      let firstMissing = null;
+
+      orderedQuestions.forEach(q => {
+        const field = document.getElementById(`field_${q.id}`);
+        const checked = document.querySelector(`input[name="${q.id}"]:checked`);
+
+        if (!checked) {
+          field.classList.add('missing');
+          field.classList.remove('answered');
+          allFilled = false;
+          if (!firstMissing) firstMissing = field;
+        } else {
+          field.classList.remove('missing');
+          field.classList.add('answered');
+        }
+      });
+
+      if (!allFilled) {
+        showToast('Please answer all questions before continuing.');
+        focusField(firstMissing);
+        return false;
+      }
+
+      let f1Score = 0;
+      let f2Score = 0;
+
+      orderedQuestions.forEach(q => {
+        const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+        const raw = parseInt(selected.value, 10);
+        const val = q.reverse ? reverseScorePreservingNI(raw) : raw;
+
+        localStorage.setItem(q.id, String(val));
+
+        if (raw === 1) {
+          localStorage.setItem(`${q.id}_ni`, '1');
+        } else {
+          localStorage.removeItem(`${q.id}_ni`);
+        }
+
+        if (factor1Set.has(q.id)) f1Score += val;
+        if (factor2Set.has(q.id)) f2Score += val;
+      });
+
+      localStorage.setItem('factor1_score', String(f1Score));
+      localStorage.setItem('factor2_score', String(f2Score));
+      return true;
+    }
+
+    document.getElementById('jumpMissingBtn').addEventListener('click', () => {
+      const field = getFirstMissingField();
+      if (field) {
+        field.classList.add('missing');
+        focusField(field);
+      } else {
+        showToast('All items are answered.');
+      }
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      if (validateAndScore()) {
+        const resultsUrl = new URL('results.html', window.location.href);
+        window.location.href = resultsUrl.href;
+      }
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
